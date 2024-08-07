@@ -1,0 +1,18 @@
+name: YrrahBirthdayEvent
+version: '1.0.0'
+main: dev.acronical.yrrahbirthdayevent.YrrahBirthdayEvent
+api-version: '1.21'
+description: "The event for Yrrah's birthday."
+author: "Acronical"
+website: https://acronical.is-a.dev
+commands:
+  start:
+    description: "Starts the game"
+    permission: yrrahbirthday.start
+    aliases: [ "startgame", "gamestart", "eventstart", "startevent" ]
+    usage: "/start"
+  stop:
+    description: "Stops the game"
+    permission: yrrahbirthday.stop
+    aliases: [ "stopgame", "gamestop", "eventstop", "stopevent" ]
+    usage: "/stop"
