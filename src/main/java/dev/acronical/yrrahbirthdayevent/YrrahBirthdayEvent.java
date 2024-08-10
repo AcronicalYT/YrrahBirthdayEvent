@@ -24,7 +24,7 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
     }
 
     public void registerCommands() {
-        getCommand("start").setExecutor(new CHandler());
-        getCommand("stop").setExecutor(new CHandler());
+        getCommand("startevent").setExecutor(new CHandler());
+        getCommand("stopevent").setExecutor(new CHandler());
     }
 }
