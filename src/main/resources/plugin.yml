@@ -6,13 +6,13 @@ description: "The event for Yrrah's birthday."
 author: "Acronical"
 website: https://acronical.is-a.dev
 commands:
-  start:
+  startevent:
     description: "Starts the game"
     permission: yrrahbirthday.start
-    aliases: [ "startgame", "gamestart", "eventstart", "startevent" ]
-    usage: "/start"
-  stop:
+    aliases: [ "startgame", "gamestart", "eventstart", ]
+    usage: "/startevent"
+  stopevent:
     description: "Stops the game"
     permission: yrrahbirthday.stop
-    aliases: [ "stopgame", "gamestop", "eventstop", "stopevent" ]
-    usage: "/stop"
+    aliases: [ "stopgame", "gamestop", "eventstop", ]
+    usage: "/stopevent"

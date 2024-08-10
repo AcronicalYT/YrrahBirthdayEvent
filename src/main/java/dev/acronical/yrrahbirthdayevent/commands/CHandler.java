@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
 import static dev.acronical.yrrahbirthdayevent.commands.impl.StartCommand.startCommand;
 import static dev.acronical.yrrahbirthdayevent.commands.impl.StopCommand.stopCommand;
 
-public class CommandHandler implements CommandExecutor {
+public class CHandler implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return false;
 
         switch (command.getName()) {
-            case "start":
+            case "startevent":
                 return startCommand(player, label, args);
-            case "stop":
+            case "stopevent":
                 return stopCommand(player, label, args);
             default:
                 sender.sendMessage("An error occurred: Command does not exist or is not implemented.");

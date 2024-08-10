@@ -1,6 +1,7 @@
 package dev.acronical.yrrahbirthdayevent;
 
-import dev.acronical.yrrahbirthdayevent.commands.CommandHandler;
+import dev.acronical.yrrahbirthdayevent.commands.CHandler;
+import dev.acronical.yrrahbirthdayevent.events.EHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,7 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try { getServer().getPluginManager().registerEvents(new EHandler(), this); } finally { logger.info("Finished registering events."); }
         try { registerCommands(); } catch(Exception e) { logger.severe("Failed to register commands..."); } finally { logger.info("Finished registering commands."); }
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Yrrah Birthday Event] Plugin is enabled!");
     }
@@ -22,7 +24,7 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
     }
 
     public void registerCommands() {
-        getCommand("start").setExecutor(new CommandHandler());
-        getCommand("stop").setExecutor(new CommandHandler());
+        getCommand("start").setExecutor(new CHandler());
+        getCommand("stop").setExecutor(new CHandler());
     }
 }
