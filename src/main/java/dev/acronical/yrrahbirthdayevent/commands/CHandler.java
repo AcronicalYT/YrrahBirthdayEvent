@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static dev.acronical.yrrahbirthdayevent.commands.impl.PVPCommand.pvpCommand;
 import static dev.acronical.yrrahbirthdayevent.commands.impl.StartCommand.startCommand;
 import static dev.acronical.yrrahbirthdayevent.commands.impl.StopCommand.stopCommand;
 
@@ -14,15 +15,16 @@ public class CHandler implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return false;
 
-        switch (command.getName()) {
+        switch (command.getName().toLowerCase()) {
             case "startevent":
                 return startCommand(player, label, args);
             case "stopevent":
                 return stopCommand(player, label, args);
+            case "pvp":
+                return pvpCommand(player, label, args);
             default:
                 sender.sendMessage("An error occurred: Command does not exist or is not implemented.");
         }
-
         return false;
     }
 }

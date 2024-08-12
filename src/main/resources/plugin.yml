@@ -2,17 +2,47 @@ name: YrrahBirthdayEvent
 version: '1.0.0'
 main: dev.acronical.yrrahbirthdayevent.YrrahBirthdayEvent
 api-version: '1.21'
-description: "The event for Yrrah's birthday."
-author: "Acronical"
-website: https://acronical.is-a.dev
+description: The event for Yrrah's birthday.
+author: Acronical
+website: https://acronical.is-a.dev/projects
 commands:
   startevent:
-    description: "Starts the game"
+    description: Starts the game
     permission: yrrahbirthday.start
-    aliases: [ "startgame", "gamestart", "eventstart", ]
-    usage: "/startevent"
+    permission-message: You do not have permission to use this command.
+    usage: /startevent
+    aliases:
+      - startgame
+      - gamestart
+      - eventstart
   stopevent:
-    description: "Stops the game"
+    description: Stops the game
     permission: yrrahbirthday.stop
-    aliases: [ "stopgame", "gamestop", "eventstop", ]
-    usage: "/stopevent"
+    permission-message: You do not have permission to use this command.
+    usage: /stopevent
+    aliases:
+      - stopgame
+      - gamestop
+      - eventstop
+  pvp:
+    description: Enable/disable player versus player
+    permission: yrrahbirthday.pvptoggle
+    permission-message: You do not have permission to use this command.
+    usage: /pvp <on|off>
+    aliases:
+      - pvptoggle
+      - togglepvp
+      - editpvp
+      - pvpedit
+      - pvpset
+      - setpvp
+permissions:
+  yrrahbirthday.start:
+    description: Start the event
+    default: op
+  yrrahbirthday.stop:
+    description: Stop the event
+    default: op
+  yrrahbirthday.pvptoggle:
+    description: Toggle PvP
+    default: op

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class PlayerDeath {
@@ -21,9 +22,10 @@ public class PlayerDeath {
         System.out.println("Removing items event!");
         Inventory playerInv = player.getInventory();
         ItemStack[] listOfItems = playerInv.getContents();
+        System.out.println(Arrays.toString(listOfItems));
         for (ItemStack item : listOfItems) {
-            if (item == null) return;
-            String itemID = Objects.requireNonNull(item.getItemMeta()).getItemName().toLowerCase();
+            if (item == null) continue;
+            String itemID = String.valueOf(item.getAmount());
             System.out.println(itemID);
         }
     }
