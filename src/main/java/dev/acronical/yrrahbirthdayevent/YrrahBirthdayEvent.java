@@ -6,16 +6,21 @@ import dev.acronical.yrrahbirthdayevent.events.EHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class YrrahBirthdayEvent extends JavaPlugin {
 
     Logger logger = Logger.getLogger("Yrrah Birthday Event");
+    File configFile = new File(getDataFolder(), "config.yml");
 
     @Override
     public void onEnable() {
+        if (!configFile.exists()) { try { configFile.createNewFile(); } catch (IOException e) { throw new RuntimeException(e); } }
         try { getServer().getPluginManager().registerEvents(new EHandler(), getPlugin(YrrahBirthdayEvent.class)); } finally { logger.info("Finished registering events."); }
-        try { registerCommands(); } catch (Exception e) { logger.severe("Failed to register commands..."); } finally { logger.info("Finished registering commands."); }
+        try { registerCommands(); } catch (NullPointerException e) { logger.severe("Failed to register one or more commands..."); } finally { logger.info("Finished registering commands."); }
+        try { registerTabCompleters(); } catch (NullPointerException e) { logger.severe("Failed to register one or more completers..."); } finally { logger.info("Finished registering completers."); }
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Yrrah Birthday Event] Plugin is enabled!");
     }
 
@@ -29,6 +34,10 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
         getCommand("startevent").setExecutor(new CHandler());
         getCommand("stopevent").setExecutor(new CHandler());
         getCommand("pvp").setExecutor(new CHandler());
+    }
+
+    public void registerTabCompleters() {
         getCommand("pvp").setTabCompleter(new PVPCommand());
     }
+
 }
