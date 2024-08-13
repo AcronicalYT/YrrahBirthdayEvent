@@ -14,7 +14,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
@@ -24,21 +26,28 @@ import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.givePlaye
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.removeItems;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDropItem.playerDropCake;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.wheatBreakEvent;
+import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerJoin.playerJoin;
 
 public class EHandler implements Listener {
 
-    private boolean isEnabled() {
-        return running;
-    }
-
     public BukkitTask eggSpawnTask = Bukkit.getServer().getScheduler().runTaskTimer(YrrahBirthdayEvent.getPlugin(YrrahBirthdayEvent.class), () -> {
-        if (!isEnabled()) return;
+        if (!running) return;
         spawnEgg();
     }, 0L, 500L);
 
     @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        playerJoin(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerCraft(CraftItemEvent e) {
+        if (e.getRecipe().getResult().getType() != Material.CAKE) e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (!isEnabled()) return;
+        if (!running) return;
         if (e.getEntity().getPlayer() == null) return;
         if (e.getEntity().getKiller() == null) return;
         Player player = e.getEntity().getPlayer();
@@ -49,13 +58,13 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onEggDrop(EntityDropItemEvent e) {
-        if (!isEnabled()) return;
+        if (!running) return;
         if (e.getEntity().getType() == EntityType.CHICKEN) e.setCancelled(true);
     }
 
     @EventHandler
     public void onItemDropped(PlayerDropItemEvent e) {
-        if (!isEnabled()) return;
+        if (!running) return;
         Player player = e.getPlayer();
         Item item = e.getItemDrop();
         Location playerLocation = player.getLocation();
@@ -64,7 +73,7 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (!isEnabled()) return;
+        if (!running) return;
         Block block = e.getBlock();
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         e.setCancelled(true);
