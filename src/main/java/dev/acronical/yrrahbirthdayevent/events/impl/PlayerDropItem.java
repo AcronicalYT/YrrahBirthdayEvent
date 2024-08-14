@@ -10,7 +10,7 @@ public class PlayerDropItem {
 
     public static void playerDropCake(Player player, Item item, Location playerLocation) {
         if (!item.getItemStack().getType().equals(Material.CAKE)) return;
-        if (playerLocation.getY() < 1 && playerLocation.subtract(0, 1, 0).getBlock().getType() != Material.DIAMOND_BLOCK) return;
+        if (playerLocation.getY() < 1) return;
         Objective scores = player.getScoreboard().getObjective("playerScores");
         if (scores == null) return;
         int scoreVal = scores.getScore(player.getName()).getScore();

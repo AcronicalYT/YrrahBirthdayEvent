@@ -3,20 +3,31 @@ package dev.acronical.yrrahbirthdayevent.commands.impl;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class StopCommand {
+
+    private static int highestScore = 0;
+    private static final List<Player> winners = new ArrayList<>();
 
     public static boolean stopCommand(Player player, String label, String[] args) {
         World world = player.getWorld();
         Location spawn = new Location(world, 98, 100, 6);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
+        Objective scores = player.getScoreboard().getObjective("playerScores");
+        if (scores == null) player.sendMessage("Scores don't exist, was the event started properly?");
         world.setDifficulty(Difficulty.PEACEFUL);
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setSpawnLocation(spawn);
         world.setPVP(false);
         for (Player target : players) {
+            int targetScore = scores.getScore(target).getScore();
+            if (highestScore < targetScore) highestScore = targetScore;
+            else if (highestScore == targetScore) winners.add(target);
             if (!target.isOp()) target.setGameMode(GameMode.ADVENTURE);
             target.getInventory().clear();
             target.setHealth(Objects.requireNonNull(target.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
@@ -24,6 +35,17 @@ public class StopCommand {
             target.setRespawnLocation(spawn);
             target.teleport(spawn);
         }
+        if (winners.size() > 1) {
+            for (Player p : players) {
+                p.sendTitle(String.format("The game was a draw between %s players!", winners.size()), "Congratulations!", 5, 20, 5);
+            }
+        } else if (winners.size() == 1) {
+            Player winner = winners.get(0);
+            for (Player p : players) {
+                p.sendTitle(String.format("The game was won by %s!", winner.getName()), "Congratulations!", 5, 20, 5);
+            }
+        }
+        Objects.requireNonNull(player.getScoreboard().getObjective(scores.getName())).unregister();
         Bukkit.broadcastMessage("The event has ended!");
         return true;
     }
