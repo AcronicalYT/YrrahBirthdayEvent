@@ -11,17 +11,21 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.sugarCaneBreakEvent;
-import static dev.acronical.yrrahbirthdayevent.events.impl.EggSpawn.spawnEgg;
+import static dev.acronical.yrrahbirthdayevent.events.impl.Runnables.spawnEgg;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.givePlayerCake;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.removeItems;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDropItem.playerDropCake;
@@ -38,6 +42,25 @@ public class EHandler implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         playerJoin(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityBreed(EntityBreedEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onFarmlandJump(PlayerInteractEvent e) {
+        if (!running) return;
+        if (e.getAction() != Action.PHYSICAL) return;
+        Block block = e.getClickedBlock();
+        if (block == null) return;
+        if (block.getType() == Material.FARMLAND) e.setCancelled(true);
     }
 
     @EventHandler
@@ -60,6 +83,7 @@ public class EHandler implements Listener {
     public void onEggDrop(EntityDropItemEvent e) {
         if (!running) return;
         if (e.getEntity().getType() == EntityType.CHICKEN) e.setCancelled(true);
+        if (e.getEntity().getType() == EntityType.COW) e.setCancelled(true);
     }
 
     @EventHandler

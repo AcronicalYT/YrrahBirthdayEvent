@@ -16,9 +16,8 @@ public class StartCommand {
         Location spawn = new Location(world, 72, 8, 90);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
         Objective scores = player.getScoreboard().registerNewObjective("playerScores", Criteria.DUMMY, "Player Score");
-        scores.setDisplaySlot(DisplaySlot.SIDEBAR);
-        scores.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        scores.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard objectives setdisplay below_name playerScores");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard objectives setdisplay list playerScores");
         world.setDifficulty(Difficulty.EASY);
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setSpawnLocation(spawn);

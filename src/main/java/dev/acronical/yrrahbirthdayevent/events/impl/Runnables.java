@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class EggSpawn extends BukkitRunnable {
+public class Runnables extends BukkitRunnable {
 
     public static void spawnEgg() {
         if (Bukkit.getServer().getOnlinePlayers().isEmpty()) return;
