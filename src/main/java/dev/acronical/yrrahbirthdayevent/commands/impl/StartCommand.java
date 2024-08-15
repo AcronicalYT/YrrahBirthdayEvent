@@ -14,14 +14,16 @@ public class StartCommand {
         World world = player.getWorld();
         Location spawn = new Location(world, 72, 8, 90);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
+        world.setDifficulty(Difficulty.EASY);
+        world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
+        world.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, false);
+        world.setSpawnLocation(spawn);
         if (player.getScoreboard().getObjective("playerScores") != null) player.getScoreboard().getObjective("playerScores").unregister();
         Objective scores = player.getScoreboard().registerNewObjective("playerScores", Criteria.DUMMY, "Player Score");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard objectives setdisplay below_name playerScores");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard objectives setdisplay list playerScores");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard objectives setdisplay sidebar playerScores");
-        world.setDifficulty(Difficulty.EASY);
-        world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        world.setSpawnLocation(spawn);
         for (Player target : players) {
             scores.getScore(target).setScore(0);
             if (!target.isOp()) target.setGameMode(GameMode.SURVIVAL);

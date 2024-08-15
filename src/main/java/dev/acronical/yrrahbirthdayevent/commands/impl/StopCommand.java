@@ -2,6 +2,7 @@ package dev.acronical.yrrahbirthdayevent.commands.impl;
 
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 
@@ -37,14 +38,18 @@ public class StopCommand {
         }
         if (winners.size() > 1) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a actionbar {\"bold\":true,\"text\":\"Congratulations\"}");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winners.get(0).getScoreboard().getObjective("playerScores").getScore(winners.get(0))));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winners.get(0).getScoreboard().getObjective("playerScores").getScore(winners.get(0)).getScore()));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a title {\"bold\":true,\"text\":\"The event was a draw!\"}");
         } else if (winners.size() == 1) {
             Player winner = winners.get(0);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a actionbar {\"bold\":true,\"text\":\"Congratulations\"}");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winner.getScoreboard().getObjective("playerScores").getScore(winner)));
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a title {\"bold\":true,\"text\":\"The event has been won by %s!\"}", winner));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winner.getScoreboard().getObjective("playerScores").getScore(winner).getScore()));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a title {\"bold\":true,\"text\":\"%s won the event!\"}", winner.getName()));
         }
+        for (Player w : winners) {
+            world.spawnEntity(w.getLocation(), EntityType.FIREWORK_ROCKET);
+        }
+        winners.clear();
         Objects.requireNonNull(player.getScoreboard().getObjective(scores.getName())).unregister();
         Bukkit.broadcastMessage("The event has ended!");
         return true;
