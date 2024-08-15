@@ -61,7 +61,7 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
         URL url = new URI("https://api.github.com/repos/AcronicalYT/YrrahBirthdayEvent/releases/latest").toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("User-Agent", "RecordingIndicator");
+        connection.setRequestProperty("User-Agent", "YrrahBirthdayEvent");
         try {
             connection.connect();
             if (connection.getResponseCode() == 200) {

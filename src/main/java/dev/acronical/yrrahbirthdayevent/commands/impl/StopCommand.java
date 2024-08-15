@@ -36,14 +36,14 @@ public class StopCommand {
             target.teleport(spawn);
         }
         if (winners.size() > 1) {
-            for (Player p : players) {
-                p.sendTitle(String.format("The game was a draw between %s players!", winners.size()), "Congratulations!", 5, 20, 5);
-            }
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a actionbar {\"bold\":true,\"text\":\"Congratulations\"}");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winners.get(0).getScoreboard().getObjective("playerScores").getScore(winners.get(0))));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a title {\"bold\":true,\"text\":\"The event was a draw!\"}");
         } else if (winners.size() == 1) {
             Player winner = winners.get(0);
-            for (Player p : players) {
-                p.sendTitle(String.format("The game was won by %s!", winner.getName()), "Congratulations!", 5, 20, 5);
-            }
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a actionbar {\"bold\":true,\"text\":\"Congratulations\"}");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a subtitle {\"bold\":true,\"text\":\"They had %s points!\"}", winner.getScoreboard().getObjective("playerScores").getScore(winner)));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("title @a title {\"bold\":true,\"text\":\"The event has been won by %s!\"}", winner));
         }
         Objects.requireNonNull(player.getScoreboard().getObjective(scores.getName())).unregister();
         Bukkit.broadcastMessage("The event has ended!");

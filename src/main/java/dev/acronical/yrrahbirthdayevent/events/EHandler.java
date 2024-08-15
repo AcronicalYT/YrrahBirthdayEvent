@@ -41,6 +41,9 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        if (!running && e.getPlayer().getScoreboard().getObjective("playerScores") != null) {
+            running = true;
+        }
         playerJoin(e.getPlayer());
     }
 
