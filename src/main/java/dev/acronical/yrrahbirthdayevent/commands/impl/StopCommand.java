@@ -2,6 +2,7 @@ package dev.acronical.yrrahbirthdayevent.commands.impl;
 
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -25,6 +26,8 @@ public class StopCommand {
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setSpawnLocation(spawn);
         world.setPVP(false);
+        removeAnimals(world, EntityType.COW);
+        removeAnimals(world, EntityType.CHICKEN);
         for (Player target : players) {
             int targetScore = scores.getScore(target).getScore();
             if (highestScore < targetScore) highestScore = targetScore;
@@ -54,4 +57,12 @@ public class StopCommand {
         Bukkit.broadcastMessage("The event has ended!");
         return true;
     }
+
+    public static void removeAnimals(World world, EntityType animal) {
+        for (Entity a : world.getEntities()) {
+            if (a.getType() != animal) continue;
+            a.remove();
+        }
+    }
+
 }

@@ -2,6 +2,8 @@ package dev.acronical.yrrahbirthdayevent.commands.impl;
 
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
@@ -34,7 +36,21 @@ public class StartCommand {
             target.teleport(spawn);
             target.sendMessage("The event has started, good luck!");
         }
+        spawnAnimals(world, EntityType.CHICKEN, new Location(world, 136, -55, 122));
+        spawnAnimals(world, EntityType.COW, new Location(world, 91, -58, 137));
         Bukkit.broadcastMessage("The event has started!");
         return true;
     }
+
+    public static void spawnAnimals(World world, EntityType animal, Location location) {
+        for (int i = 0; i < 15; i++) {
+            Animals spawnedEntity = (Animals) world.spawnEntity(location, animal);
+            spawnedEntity.setCustomName(String.format("Event %s", spawnedEntity.getType().toString().toLowerCase()));
+            spawnedEntity.setCustomNameVisible(false);
+            spawnedEntity.setInvulnerable(true);
+            spawnedEntity.setBreed(false);
+            spawnedEntity.setAdult();
+        }
+    }
+
 }

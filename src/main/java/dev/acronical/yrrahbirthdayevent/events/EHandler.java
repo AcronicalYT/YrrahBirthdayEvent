@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.sugarCaneBreakEvent;
+import static dev.acronical.yrrahbirthdayevent.events.impl.BlockInteract.bucketChestOpen;
 import static dev.acronical.yrrahbirthdayevent.events.impl.Runnables.spawnEgg;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.givePlayerCake;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.removeItems;
@@ -49,6 +50,7 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
+        if (e.getPlayer().isOp()) return;
         e.setCancelled(true);
     }
 
@@ -101,10 +103,16 @@ public class EHandler implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if (!running) return;
+        if (e.getPlayer().isOp()) return;
         Block block = e.getBlock();
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         e.setCancelled(true);
         if (e.getBlock().getType() == Material.SUGAR_CANE) sugarCaneBreakEvent(block);
         if (e.getBlock().getType() == Material.WHEAT) wheatBreakEvent(block);
+    }
+
+    @EventHandler
+    public void onBlockInteract(PlayerInteractEvent e) {
+        bucketChestOpen(e);
     }
 }
