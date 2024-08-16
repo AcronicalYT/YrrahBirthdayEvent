@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -18,8 +19,8 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        try { versionCheck(); } catch (Exception ignored) { logger.severe("An exception occurred when attempting to grab the latest version..."); }
-        try { getServer().getPluginManager().registerEvents(new EHandler(), getPlugin(YrrahBirthdayEvent.class)); } finally { logger.info("Finished registering events."); }
+        try { versionCheck(); } catch (Exception ignored) { logger.warning("An exception occurred when attempting to grab the latest version..."); }
+        try { getServer().getPluginManager().registerEvents(new EHandler(), getPlugin(YrrahBirthdayEvent.class)); } catch (Exception e) { logger.severe("Failed to register the event handler..."); } finally { logger.info("Finished registering events."); }
         try { registerCommands(); } catch (NullPointerException e) { logger.severe("Failed to register one or more commands..."); } finally { logger.info("Finished registering commands."); }
         try { registerTabCompleters(); } catch (NullPointerException e) { logger.severe("Failed to register one or more completers..."); } finally { logger.info("Finished registering completers."); }
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Yrrah Birthday Event] Plugin is enabled!");
@@ -32,13 +33,13 @@ public final class YrrahBirthdayEvent extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("startevent").setExecutor(new CHandler());
-        getCommand("stopevent").setExecutor(new CHandler());
-        getCommand("pvp").setExecutor(new CHandler());
+        Objects.requireNonNull(getCommand("startevent")).setExecutor(new CHandler());
+        Objects.requireNonNull(getCommand("stopevent")).setExecutor(new CHandler());
+        Objects.requireNonNull(getCommand("pvp")).setExecutor(new CHandler());
     }
 
     private void registerTabCompleters() {
-        getCommand("pvp").setTabCompleter(new PVPCommand());
+        Objects.requireNonNull(getCommand("pvp")).setTabCompleter(new PVPCommand());
     }
 
     private void versionCheck() throws Exception {

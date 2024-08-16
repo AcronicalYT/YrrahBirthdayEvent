@@ -45,6 +45,7 @@ public class EHandler implements Listener {
         if (!running && e.getPlayer().getScoreboard().getObjective("playerScores") != null) {
             running = true;
         }
+        if (e.getPlayer().isOp()) return;
         playerJoin(e.getPlayer());
     }
 

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
+
 public class StopCommand {
 
     private static int highestScore = 0;
@@ -21,7 +23,11 @@ public class StopCommand {
         Location spawn = new Location(world, 98, 100, 6);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
         Objective scores = player.getScoreboard().getObjective("playerScores");
-        if (scores == null) player.sendMessage("Scores don't exist, was the event started properly?");
+        if (scores == null) {
+            running = false;
+            player.sendMessage("Scores don't exist, was the event started properly?");
+            return true;
+        }
         world.setDifficulty(Difficulty.PEACEFUL);
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setSpawnLocation(spawn);
@@ -61,6 +67,7 @@ public class StopCommand {
     public static void removeAnimals(World world, EntityType animal) {
         for (Entity a : world.getEntities()) {
             if (a.getType() != animal) continue;
+            if (!a.getName().startsWith("Event ")) continue;
             a.remove();
         }
     }
