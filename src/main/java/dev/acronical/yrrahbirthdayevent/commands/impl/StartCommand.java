@@ -32,7 +32,7 @@ public class StartCommand {
             target.getInventory().clear();
             target.setHealth(Objects.requireNonNull(target.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
             target.setSaturation(20);
-            target.setRespawnLocation(spawn);
+            target.setRespawnLocation(spawn, true);
             target.teleport(spawn);
             target.sendMessage("The event has started, good luck!");
         }

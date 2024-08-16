@@ -21,6 +21,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
@@ -31,7 +32,7 @@ import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.givePlaye
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.removeItems;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDropItem.playerDropCake;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.wheatBreakEvent;
-import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerJoin.playerJoin;
+import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerJoin.playerSpawn;
 
 public class EHandler implements Listener {
 
@@ -46,7 +47,12 @@ public class EHandler implements Listener {
             running = true;
         }
         if (e.getPlayer().isOp()) return;
-        playerJoin(e.getPlayer());
+        playerSpawn(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent e) {
+        playerSpawn(e.getPlayer());
     }
 
     @EventHandler

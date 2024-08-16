@@ -20,7 +20,7 @@ public class StopCommand {
 
     public static boolean stopCommand(Player player, String label, String[] args) {
         World world = player.getWorld();
-        Location spawn = new Location(world, 98, 100, 6);
+        Location spawn = new Location(world, 92, 20, 7);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
         Objective scores = player.getScoreboard().getObjective("playerScores");
         if (scores == null) {
@@ -32,17 +32,21 @@ public class StopCommand {
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setSpawnLocation(spawn);
         world.setPVP(false);
-        removeAnimals(world, EntityType.COW);
-        removeAnimals(world, EntityType.CHICKEN);
+        removeEntities(world, EntityType.COW);
+        removeEntities(world, EntityType.CHICKEN);
+        removeEntities(world, EntityType.ITEM);
         for (Player target : players) {
             int targetScore = scores.getScore(target).getScore();
-            if (highestScore < targetScore) highestScore = targetScore;
+            if (highestScore < targetScore) {
+                highestScore = targetScore;
+                winners.add(target);
+            }
             else if (highestScore == targetScore) winners.add(target);
             if (!target.isOp()) target.setGameMode(GameMode.ADVENTURE);
             target.getInventory().clear();
             target.setHealth(Objects.requireNonNull(target.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
             target.setSaturation(20);
-            target.setRespawnLocation(spawn);
+            target.setRespawnLocation(spawn, true);
             target.teleport(spawn);
         }
         if (winners.size() > 1) {
@@ -64,11 +68,11 @@ public class StopCommand {
         return true;
     }
 
-    public static void removeAnimals(World world, EntityType animal) {
-        for (Entity a : world.getEntities()) {
-            if (a.getType() != animal) continue;
-            if (!a.getName().startsWith("Event ")) continue;
-            a.remove();
+    public static void removeEntities(World world, EntityType entity) {
+        for (Entity e : world.getEntities()) {
+            if (e.getType() != entity) continue;
+            if (!e.getName().startsWith("Event ") || e.getType() != EntityType.ITEM) continue;
+            e.remove();
         }
     }
 
