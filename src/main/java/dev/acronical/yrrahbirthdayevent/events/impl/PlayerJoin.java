@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
+import static dev.acronical.yrrahbirthdayevent.commands.impl.StartCommand.setInventory;
 
 public class PlayerJoin {
 
@@ -19,9 +20,10 @@ public class PlayerJoin {
     private static void joinOnEventRunning(Player player) {
         World world = player.getWorld();
         Objective scores = player.getScoreboard().getObjective("playerScores");
-        if (scores != null) {
+        if (scores != null && scores.getScore(player).getScore() >= 0) {
             scores.getScore(player).setScore(0);
         }
+        if (player.getInventory().isEmpty()) setInventory(player);
         player.setGameMode(GameMode.SURVIVAL);
         player.setRespawnLocation(new Location(world, 72, 8, 90), true);
         player.teleport(new Location(world, 245, -45, 12));

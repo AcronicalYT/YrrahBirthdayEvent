@@ -21,6 +21,7 @@ public class StartCommand {
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setGameRule(GameRule.COMMAND_BLOCK_OUTPUT, false);
         world.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, false);
+        world.setGameRule(GameRule.KEEP_INVENTORY, true);
         world.setSpawnLocation(spawn);
         if (player.getScoreboard().getObjective("playerScores") != null) player.getScoreboard().getObjective("playerScores").unregister();
         Objective scores = player.getScoreboard().registerNewObjective("playerScores", Criteria.DUMMY, "Player Score");
