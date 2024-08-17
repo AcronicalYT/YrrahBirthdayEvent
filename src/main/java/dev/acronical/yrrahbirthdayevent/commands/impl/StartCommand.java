@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
 
@@ -14,7 +15,7 @@ public class StartCommand {
 
     public static boolean startCommand(Player player, String label, String[] args) {
         World world = player.getWorld();
-        Location spawn = new Location(world, 72, 8, 90);
+        Location spawn = new Location(world, 245, -45, 12);
         Player[] players = Bukkit.getServer().getOnlinePlayers().toArray(new Player[0]);
         world.setDifficulty(Difficulty.EASY);
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
@@ -33,7 +34,8 @@ public class StartCommand {
             target.setHealth(Objects.requireNonNull(target.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
             target.setSaturation(20);
             target.setRespawnLocation(spawn, true);
-            target.teleport(spawn);
+            target.teleport(new Location(world, 72, 8, 90));
+            setInventory(target);
             target.sendMessage("The event has started, good luck!");
         }
         spawnAnimals(world, EntityType.CHICKEN, new Location(world, 136, -55, 122));
@@ -42,7 +44,7 @@ public class StartCommand {
         return true;
     }
 
-    public static void spawnAnimals(World world, EntityType animal, Location location) {
+    private static void spawnAnimals(World world, EntityType animal, Location location) {
         for (int i = 0; i < 15; i++) {
             Animals spawnedEntity = (Animals) world.spawnEntity(location, animal);
             spawnedEntity.setCustomName(String.format("Event %s", spawnedEntity.getType().toString().toLowerCase()));
@@ -51,6 +53,16 @@ public class StartCommand {
             spawnedEntity.setBreed(false);
             spawnedEntity.setAdult();
         }
+    }
+
+    public static void setInventory(Player player) {
+        player.getInventory().clear();
+        player.getInventory().addItem(new ItemStack(Material.WOODEN_SWORD));
+        player.getInventory().addItem(new ItemStack(Material.BREAD, 8));
+        player.getInventory().addItem(new ItemStack(Material.LEATHER_HELMET));
+        player.getInventory().addItem(new ItemStack(Material.LEATHER_CHESTPLATE));
+        player.getInventory().addItem(new ItemStack(Material.LEATHER_LEGGINGS));
+        player.getInventory().addItem(new ItemStack(Material.LEATHER_BOOTS));
     }
 
 }

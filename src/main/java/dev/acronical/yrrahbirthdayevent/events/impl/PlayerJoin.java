@@ -16,10 +16,9 @@ public class PlayerJoin {
 
     private static void joinOnEventRunning(Player player) {
         World world = player.getWorld();
-        Location spawn = new Location(world, 72, 8, 90);
         player.setGameMode(GameMode.SURVIVAL);
-        player.setRespawnLocation(spawn, true);
-        player.teleport(spawn);
+        player.setRespawnLocation(new Location(world, 72, 8, 90), true);
+        player.teleport(new Location(world, 245, -45, 12));
     }
 
     private static void joinOnEventStopped(Player player) {

@@ -68,7 +68,7 @@ public class StopCommand {
         return true;
     }
 
-    public static void removeEntities(World world, EntityType entity) {
+    private static void removeEntities(World world, EntityType entity) {
         for (Entity e : world.getEntities()) {
             if (e.getType() != entity) continue;
             if (!e.getName().startsWith("Event ") || e.getType() != EntityType.ITEM) continue;

@@ -16,6 +16,7 @@ public class PlayerDropItem {
         int scoreVal = scores.getScore(player.getName()).getScore();
         int newScoreVal = scoreVal + 1;
         scores.getScore(player.getName()).setScore(newScoreVal);
+        player.playSound(playerLocation, "entity.player.levelup", 1, 1);
         player.sendMessage("You scored a point!");
         player.getServer().broadcastMessage(String.format("%s has scored a point!", player.getName()));
         item.remove();

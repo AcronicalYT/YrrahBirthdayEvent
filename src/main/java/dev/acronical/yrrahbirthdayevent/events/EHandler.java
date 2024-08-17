@@ -39,7 +39,7 @@ public class EHandler implements Listener {
     public BukkitTask eggSpawnTask = Bukkit.getServer().getScheduler().runTaskTimer(YrrahBirthdayEvent.getPlugin(YrrahBirthdayEvent.class), () -> {
         if (!running) return;
         spawnEgg();
-    }, 0L, 500L);
+    }, 0L, 250L);
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -77,7 +77,7 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onPlayerCraft(CraftItemEvent e) {
-        if (e.getRecipe().getResult().getType() != Material.CAKE) e.setCancelled(true);
+        if (e.getRecipe().getResult().getType() != Material.CAKE && e.getRecipe().getResult().getType() == Material.BREAD) e.setCancelled(true);
     }
 
     @EventHandler

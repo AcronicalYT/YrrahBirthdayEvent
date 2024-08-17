@@ -17,7 +17,7 @@ public class PlayerDeath {
         ItemStack[] contents = playerInv.getContents();
 
         for (ItemStack itemStack : contents) {
-            if (itemStack != null && itemStack.getAmount() > 0) {
+            if (itemStack != null && itemStack.getAmount() > 1) {
                 int newAmount = Math.round((float) itemStack.getAmount() / 2);
                 itemStack.setAmount(newAmount);
             }
