@@ -10,8 +10,9 @@ public class PlayerInteract {
 
     public static void playerThrowEgg(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (Objects.requireNonNull(e.getPlayer().getItemInUse()).getType() != Material.EGG) return;
-        else e.setCancelled(true);
+        if (e.getPlayer().getItemInUse() == null) return;
+        if (e.getPlayer().getItemInUse().getType() != Material.EGG) return;
+        e.setCancelled(true);
     }
 
 }
