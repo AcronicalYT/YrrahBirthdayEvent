@@ -4,6 +4,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.Objective;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
 
@@ -16,6 +18,10 @@ public class PlayerJoin {
 
     private static void joinOnEventRunning(Player player) {
         World world = player.getWorld();
+        Objective scores = player.getScoreboard().getObjective("playerScores");
+        if (scores != null) {
+            scores.getScore(player).setScore(0);
+        }
         player.setGameMode(GameMode.SURVIVAL);
         player.setRespawnLocation(new Location(world, 72, 8, 90), true);
         player.teleport(new Location(world, 245, -45, 12));

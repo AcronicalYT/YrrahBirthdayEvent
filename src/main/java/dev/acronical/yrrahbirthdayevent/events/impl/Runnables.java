@@ -12,6 +12,13 @@ import java.util.Objects;
 
 public class Runnables {
 
+    int[][] sugarCaneLocations = {
+            { 123, -59, 102 },
+            { 127, -59, 103 },
+            { 134, -59, 96 },
+            {  }
+    };
+
     public static void spawnEgg() {
         if (Bukkit.getServer().getOnlinePlayers().isEmpty()) return;
         World world = Objects.requireNonNull(Bukkit.getServer().getOnlinePlayers().stream().findFirst().orElse(null)).getWorld();
@@ -23,4 +30,9 @@ public class Runnables {
             world.dropItem(chickenLocation, new ItemStack(Material.EGG));
         }
     }
+
+    public static void setSugarCane() {
+
+    }
+
 }

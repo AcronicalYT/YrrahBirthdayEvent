@@ -10,6 +10,7 @@ public class PlayerDeath {
     public static void givePlayerCake(Player player) {
         if (player == null) return;
         player.getInventory().addItem(new ItemStack(Material.CAKE));
+        player.getInventory().addItem(new ItemStack(Material.CAKE));
     }
 
     public static void removeItems(Player player) {
