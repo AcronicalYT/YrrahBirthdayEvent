@@ -21,7 +21,6 @@ public class BlockBreak {
         if (age.getAge() < age.getMaximumAge()) return;
         world.dropItemNaturally(blockLocation, new ItemStack(Material.WHEAT, random.nextInt(1, 6)));
         block.setType(Material.WHEAT);
-        age.setAge(7);
     }
 
     public static void sugarCaneBreakEvent(Block block) {

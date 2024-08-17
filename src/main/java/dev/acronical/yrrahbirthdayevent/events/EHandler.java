@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.sugarCaneBreakEvent;
+import static dev.acronical.yrrahbirthdayevent.events.impl.BlockInteract.bonemealChestOpen;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockInteract.bucketChestOpen;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerInteract.playerThrowEgg;
 import static dev.acronical.yrrahbirthdayevent.events.impl.Runnables.setSugarCane;
@@ -137,5 +138,6 @@ public class EHandler implements Listener {
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent e) {
         bucketChestOpen(e);
+        bonemealChestOpen(e);
     }
 }

@@ -29,4 +29,20 @@ public class BlockInteract {
         player.openInventory(inventory);
     }
 
+    public static void bonemealChestOpen(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Player player = e.getPlayer();
+        Block block = e.getClickedBlock();
+        if (block == null) return;
+        if (block.getType() != Material.CHEST) return;
+        Chest chest = (Chest) block.getState();
+        if (!chest.getCustomName().equals("Bonemeal")) return;
+        e.setCancelled(true);
+        Inventory inventory = Bukkit.createInventory(player, 9, ChatColor.AQUA + "Bonemeal");
+        for (int i = 0; i < 9; i++) {
+            inventory.setItem(i, new ItemStack(Material.BONE_MEAL, 64));
+        }
+        player.openInventory(inventory);
+    }
+
 }
