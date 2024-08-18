@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -73,6 +74,16 @@ public class EHandler implements Listener {
     }
 
     @EventHandler
+    public void onPlayerDamaged(EntityDamageByEntityEvent e) {
+        if (!running) return;
+        if (!(e.getEntity() instanceof Player)) return;
+        if (!(e.getDamager() instanceof Player damager)) return;
+        if (damager.isOp()) return;
+        if (damager.getItemInUse() == null) return;
+        if (damager.getItemInUse().getType() == Material.TRIDENT) e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onFarmlandJump(PlayerInteractEvent e) {
         if (!running) return;
         if (e.getAction() != Action.PHYSICAL) return;
@@ -123,8 +134,12 @@ public class EHandler implements Listener {
         if (e.getPlayer().isOp()) return;
         Block block = e.getBlock();
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        e.setDropItems(false);
+        if (e.getBlock().getType() == Material.SUGAR_CANE) {
+            sugarCaneBreakEvent(block);
+            return;
+        }
         e.setCancelled(true);
-        if (e.getBlock().getType() == Material.SUGAR_CANE) sugarCaneBreakEvent(block);
         if (e.getBlock().getType() == Material.WHEAT) wheatBreakEvent(block);
     }
 

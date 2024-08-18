@@ -28,7 +28,7 @@ public class PlayerJoin {
         }
         if (player.getInventory().isEmpty()) setInventory(player);
         player.setGameMode(GameMode.SURVIVAL);
-        player.setRespawnLocation(new Location(world, 72, 8, 90), true);
+        player.setRespawnLocation(new Location(world, 245, -45, 12), true);
         if (cause.equalsIgnoreCase("init")) player.teleport(new Location(world, 72, 8, 90));
         else if (cause.equalsIgnoreCase("death")) player.teleport(new Location(world, 245, -45, 12));
         else player.teleport(Objects.requireNonNull(player.getRespawnLocation()));
