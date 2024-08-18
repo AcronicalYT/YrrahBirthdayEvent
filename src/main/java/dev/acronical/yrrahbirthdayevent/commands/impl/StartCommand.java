@@ -2,10 +2,12 @@ package dev.acronical.yrrahbirthdayevent.commands.impl;
 
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
 
@@ -57,13 +59,27 @@ public class StartCommand {
     }
 
     public static void setInventory(Player player) {
-        player.getInventory().clear();
-        player.getInventory().addItem(new ItemStack(Material.WOODEN_SWORD));
+        player.getInventory().addItem(createItem(Material.LEATHER_HELMET));
+        player.getInventory().addItem(createItem(Material.LEATHER_CHESTPLATE));
+        player.getInventory().addItem(createItem(Material.LEATHER_LEGGINGS));
+        player.getInventory().addItem(createItem(Material.LEATHER_BOOTS));
+        player.getInventory().addItem(createItem(Material.WOODEN_SWORD));
+        player.getInventory().addItem(createItem(Material.TRIDENT));
         player.getInventory().addItem(new ItemStack(Material.BREAD, 8));
-        player.getInventory().addItem(new ItemStack(Material.LEATHER_HELMET));
-        player.getInventory().addItem(new ItemStack(Material.LEATHER_CHESTPLATE));
-        player.getInventory().addItem(new ItemStack(Material.LEATHER_LEGGINGS));
-        player.getInventory().addItem(new ItemStack(Material.LEATHER_BOOTS));
+    }
+
+    private static ItemStack createItem(Material material) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setUnbreakable(true);
+        if (material.equals(Material.LEATHER_BOOTS)) {
+            itemMeta.addEnchant(Enchantment.FEATHER_FALLING, 4, true);
+        } else if (material.equals(Material.TRIDENT)) {
+            itemMeta.addEnchant(Enchantment.RIPTIDE, 2, true);
+        }
+        item.setItemMeta(itemMeta);
+        return item;
     }
 
 }

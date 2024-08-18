@@ -8,8 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class Runnables {
 
@@ -44,27 +44,22 @@ public class Runnables {
         World world = Objects.requireNonNull(Bukkit.getServer().getOnlinePlayers().stream().findFirst().orElse(null)).getWorld();
         int mobCount = (int) world.getEntities().stream().filter(entity -> entity.getType() == EntityType.CHICKEN).count();
         for (int i = 0; i < mobCount; i++) {
-            Entity chicken = world.getLivingEntities().stream().filter(livingEntity -> livingEntity.getType() == EntityType.CHICKEN).findAny().orElse(null);
-            if (chicken == null) return;
-            Location chickenLocation = chicken.getLocation();
-            world.dropItem(chickenLocation, new ItemStack(Material.EGG));
+            Stream<Entity> entities = world.getEntities().stream().filter(entity -> entity.getType() == EntityType.CHICKEN);
+            entities.forEach(entity -> {
+                Location location = entity.getLocation();
+                world.dropItemNaturally(location, new ItemStack(Material.EGG));
+            });
         }
     }
 
     public static void setSugarCane() {
         if (Bukkit.getServer().getOnlinePlayers().isEmpty()) return;
         World world = Objects.requireNonNull(Bukkit.getServer().getOnlinePlayers().stream().findFirst().orElse(null)).getWorld();
-        System.out.println("Setting sugar cane");
         for (int[] sugarCaneLocation : sugarCaneLocations) {
-            System.out.println(Arrays.toString(sugarCaneLocation));
             int x = sugarCaneLocation[0];
-            System.out.println(x);
             int y = sugarCaneLocation[1];
-            System.out.println(y);
             int z = sugarCaneLocation[2];
-            System.out.println(z);
             world.getBlockAt(new Location(world, x, y, z)).setType(Material.SUGAR_CANE);
-            System.out.println("Set sugar cane");
         }
     }
 

@@ -18,17 +18,15 @@ import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import static dev.acronical.yrrahbirthdayevent.commands.CHandler.running;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockBreak.sugarCaneBreakEvent;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockInteract.bonemealChestOpen;
 import static dev.acronical.yrrahbirthdayevent.events.impl.BlockInteract.bucketChestOpen;
-import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerInteract.playerThrowEgg;
 import static dev.acronical.yrrahbirthdayevent.events.impl.Runnables.setSugarCane;
 import static dev.acronical.yrrahbirthdayevent.events.impl.Runnables.spawnEgg;
 import static dev.acronical.yrrahbirthdayevent.events.impl.PlayerDeath.givePlayerCake;
@@ -42,7 +40,7 @@ public class EHandler implements Listener {
     public BukkitTask eggSpawnTask = Bukkit.getServer().getScheduler().runTaskTimer(YrrahBirthdayEvent.getPlugin(YrrahBirthdayEvent.class), () -> {
         if (!running) return;
         spawnEgg();
-    }, 0L, 250L);
+    }, 0L, 350L);
 
     public BukkitTask sugarCaneSpawnTask = Bukkit.getServer().getScheduler().runTaskTimer(YrrahBirthdayEvent.getPlugin(YrrahBirthdayEvent.class), () -> {
         if (!running) return;
@@ -55,12 +53,12 @@ public class EHandler implements Listener {
             running = true;
         }
         if (e.getPlayer().isOp()) return;
-        playerSpawn(e.getPlayer());
+        playerSpawn(e.getPlayer(), "init");
     }
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
-        playerSpawn(e.getPlayer());
+        playerSpawn(e.getPlayer(), "death");
     }
 
     @EventHandler
@@ -92,10 +90,10 @@ public class EHandler implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         if (!running) return;
         if (e.getEntity().getPlayer() == null) return;
-        if (e.getEntity().getKiller() == null) return;
         Player player = e.getEntity().getPlayer();
-        Player killer = e.getEntity().getKiller();
         removeItems(player);
+        if (e.getEntity().getKiller() == null) return;
+        Player killer = e.getEntity().getKiller();
         if (player != killer) givePlayerCake(killer);
     }
 
@@ -131,13 +129,34 @@ public class EHandler implements Listener {
     }
 
     @EventHandler
-    public void onPlayerThrowEgg(PlayerInteractEvent e) {
-        playerThrowEgg(e);
+    public void onPlayerThrowEgg(PlayerEggThrowEvent e) {
+        if (!running) return;
+        if (e.getPlayer().isOp()) return;
+        e.setHatching(false);
+        e.getPlayer().getInventory().addItem(new ItemStack(Material.EGG));
     }
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent e) {
+        if (!running) return;
         bucketChestOpen(e);
         bonemealChestOpen(e);
     }
+
+    @EventHandler
+    public void onPlayerDepositItem(InventoryClickEvent e) {
+        if (!running) return;
+        if (e.getCurrentItem() == null) return;
+        if (e.getInventory().getSize() == 9 && (e.getCurrentItem().getType() != Material.BONE_MEAL && e.getCurrentItem().getType() != Material.BUCKET)) e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerClickCake(PlayerInteractEvent e) {
+        if (!running) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getClickedBlock() == null) return;
+        if (e.getClickedBlock().getType() != Material.CAKE) return;
+        e.setCancelled(true);
+    }
+
 }
