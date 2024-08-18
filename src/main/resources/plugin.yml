@@ -1,5 +1,5 @@
 name: YrrahBirthdayEvent
-version: '1.0.0'
+version: '1.0.1'
 main: dev.acronical.yrrahbirthdayevent.YrrahBirthdayEvent
 api-version: '1.21'
 description: The event for Yrrah's birthday.
