@@ -94,7 +94,7 @@ public class EHandler implements Listener {
 
     @EventHandler
     public void onPlayerCraft(CraftItemEvent e) {
-        if (e.getRecipe().getResult().getType() != Material.CAKE && e.getRecipe().getResult().getType() == Material.BREAD) e.setCancelled(true);
+        if (e.getRecipe().getResult().getType() != Material.CAKE && e.getRecipe().getResult().getType() != Material.BREAD) e.setCancelled(true);
     }
 
     @EventHandler
@@ -121,7 +121,7 @@ public class EHandler implements Listener {
         Player player = e.getPlayer();
         Item item = e.getItemDrop();
         Location playerLocation = player.getLocation();
-        if (item.getItemStack().getType() != Material.CAKE) {
+        if (item.getItemStack().getType() != Material.CAKE && item.getItemStack().getType() != Material.BREAD && item.getItemStack().getType() != Material.EGG && item.getItemStack().getType() != Material.MILK_BUCKET) {
             e.setCancelled(true);
             return;
         }
@@ -171,6 +171,16 @@ public class EHandler implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getClickedBlock() == null) return;
         if (e.getClickedBlock().getType() != Material.CAKE) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerPlaceLiquids(PlayerInteractEvent e) {
+        if (!running) return;
+        if (e.getPlayer().isOp()) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (e.getItem() == null) return;
+        if (e.getItem().getType() != Material.WATER_BUCKET && e.getItem().getType() != Material.LAVA_BUCKET) return;
         e.setCancelled(true);
     }
 
